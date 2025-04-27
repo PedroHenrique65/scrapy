@@ -8,7 +8,7 @@ df = pd.read_json('data/data.jsonl', lines = True)
 pd.options.display.max_columns = None
 
 df['_source'] = 'mercadolivre'
-df['data_coleta'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+#df['data_coleta'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
 # Tratar nulos
 df['old_money'] = df['old_money'].fillna('0')
@@ -29,17 +29,23 @@ df['reviews_rating_number'] = df['reviews_rating_number'].astype(int)
 
 # Filtrar apenas produtos com preço entre 1000 e 10000 reais
 
+# ...
+
+# Filtrar apenas produtos com preço entre 1000 e 10000 reais
 df = df[
     (df['old_money'] >= 1000) & (df['old_money'] <= 10000) &
     (df['new_money'] >= 1000) & (df['new_money'] <= 10000)
 ]
-print(df)
 
-# Conectar ao banco de dados SQLite (ou criar um novo, se não existir)
+# Forçar tipos 'object' para string
+for col in df.select_dtypes(include=['object']).columns:
+    df[col] = df[col].astype(str)
+
+# Conectar ao banco
 conn = sqlite3.connect('data/mercadolivre.db')
 
-#Salvar o DataFrame no banco de dados
+# Salvar
 df.to_sql('mercadolivre', conn, if_exists='replace', index=False)
 
-# Fechar a conexão
+# Fechar
 conn.close()
