@@ -33,8 +33,8 @@ df['reviews_rating_number'] = df['reviews_rating_number'].astype(int)
 
 # Filtrar apenas produtos com preço entre 1000 e 10000 reais
 df = df[
-    (df['old_money'] >= 1000) & (df['old_money'] <= 10000) &
-    (df['new_money'] >= 1000) & (df['new_money'] <= 10000)
+    (df['old_money'] >= 500) & (df['old_money'] <= 10000) &
+    (df['new_money'] >= 500) & (df['new_money'] <= 10000)
 ]
 
 # Forçar tipos 'object' para string
